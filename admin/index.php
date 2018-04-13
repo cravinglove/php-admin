@@ -1,13 +1,20 @@
 <?php 
     
-  // 校验用户
-session_start();
+//   // 校验用户
+// session_start();
 
-if (empty($_SESSION['current_login_user'])) {
-  // 没有当前登录用户信息
-  header('Location: /admin/login.php');
-}
+// if (empty($_SESSION['current_login_user'])) {
+//   // 没有当前登录用户信息
+//   header('Location: /admin/login.php');
+// }
+require_once '../functions.php';
 
+// 判断用户是否登录
+xiu_get_current_user();
+
+// 获取界面所需要的数据
+$posts_count = xiu_fetch('select count(1) as num from posts');
+var_dump($posts_count[0]['num']);
 ?>
 
 <!DOCTYPE html>

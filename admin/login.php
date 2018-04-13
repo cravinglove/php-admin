@@ -29,7 +29,7 @@ function login () {
 
   // 函数之前加@忽略错误
   // 连接对象，以备后续查询
-  $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+  $conn = mysqli_connect(XIU_DB_HOST, XIU_DB_USER, XIU_DB_PASS, XIU_DB_NAME);
 
   if (!$conn) {
     exit('连接数据库失败');
@@ -112,5 +112,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <button class="btn btn-primary btn-block" href="index.html">登 录</button>
     </form>
   </div>
+  <script src="/static/assets/vendors/jquery/jquery.js"></script>
+  <script>
+    // 邮箱失去焦点后并且判断为邮箱才去执行ajax请求
+    $(function () {
+
+      var emailFormat = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/;
+      $('#email').on('blur', function () {
+        var val = $(this).val();
+        // 忽略文本为空或者不是邮箱
+        if (!val || !emailFormat.test(val)) return;
+        // 获取邮箱对应的头像，拿到对应地址，显示到img元素上
+        $.get('/admin/api/avatar.php', { email: val }, function (res) {
+          if (!res) return;
+          $('.avatar').fadeOut(function () {
+            $(this).on('load',function () {
+              $(this).fadeIn();
+            }).attr('src', res);
+          })
+        })
+      })
+    })
+  </script>
 </body>
 </html>
